@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antonnet Chigumba — Finance &amp; Administration | Virtual Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-light:#2C4066;
+    --ochre:#C98A2C;
+    --ochre-light:#E3A94D;
+    --cream:#F6F1E7;
+    --cream-dark:#ECE1CB;
+    --charcoal:#26241F;
+    --line:#D9CBAE;
+    --paper-hole:#D9CBAE;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; color:var(--navy); }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ochre);
+  }
+
+  /* ---------- Layout shell: notebook with tab navigation ---------- */
+  .shell{
+    display:flex;
+    min-height:100vh;
+  }
+  nav.tabs{
+    position:sticky;
+    top:0;
+    height:100vh;
+    width:64px;
+    background:var(--navy);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:32px;
+    flex-shrink:0;
+    z-index:50;
+  }
+  nav.tabs .tab{
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#B7C2D6;
+    text-decoration:none;
+    padding:18px 0;
+    margin-bottom:6px;
+    border-right:3px solid transparent;
+    transition:all .25s ease;
+  }
+  nav.tabs .tab:hover, nav.tabs .tab.active{
+    color:var(--ochre-light);
+    border-right:3px solid var(--ochre);
+    background:rgba(255,255,255,0.04);
+  }
+
+  main{ flex:1; position:relative; }
+
+  /* ring-binder holes down the margin, echoing a planner page */
+  .page{
+    position:relative;
+    padding:96px 8vw 96px calc(8vw + 34px);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .page::before{
+    content:"";
+    position:absolute;
+    left:6px;
+    top:40px;
+    bottom:40px;
+    width:1px;
+    background:repeating-linear-gradient(
+      to bottom,
+      var(--paper-hole) 0 10px,
+      transparent 10px 34px
+    );
+  }
+  .page::after{
+    content:"";
+    position:absolute;
+    left:0;
+    top:40px;
+    bottom:40px;
+    width:12px;
+    background-image: radial-gradient(circle, var(--paper-hole) 3.5px, transparent 3.6px);
+    background-size: 12px 34px;
+    background-repeat: repeat-y;
+  }
+
+  section{ border-bottom:1px solid var(--line); padding-bottom:72px; margin-bottom:72px; }
+  section:last-of-type{ border-bottom:none; }
+
+  /* ---------- Hero ---------- */
+  .hero{ min-height:82vh; display:flex; flex-direction:column; justify-content:center; }
+  .hero .tagline-tab{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--ochre);
+    color:var(--navy);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    padding:8px 16px 8px 14px;
+    border-radius:0 4px 4px 0;
+    margin-bottom:28px;
+    width:fit-content;
+    position:relative;
+    left:-8px+0px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:1.04;
+    margin-bottom:18px;
+  }
+  .hero .role{
+    font-size:1.15rem;
+    color:var(--navy-light);
+    margin-bottom:28px;
+    font-weight:500;
+  }
+  .hero p.lede{
+    max-width:560px;
+    font-size:1.02rem;
+    color:#4B4738;
+    margin-bottom:34px;
+  }
+  .hero .cta-row{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.03em;
+    padding:14px 26px;
+    border-radius:2px;
+    text-decoration:none;
+    display:inline-block;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{ background:var(--navy); color:var(--cream); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:4px 4px 0 var(--ochre); }
+  .btn-ghost{ background:transparent; color:var(--navy); border:1.5px solid var(--navy); }
+  .btn-ghost:hover{ transform:translateY(-2px); box-shadow:4px 4px 0 var(--cream-dark); }
+
+  /* ---------- Section headers ---------- */
+  .section-head{ margin-bottom:40px; }
+  .section-head h2{ font-size:clamp(1.7rem, 3vw, 2.3rem); margin-top:8px; }
+
+  /* ---------- Services ---------- */
+  .service-list{ display:flex; flex-direction:column; }
+  .service-row{
+    display:grid;
+    grid-template-columns:70px 1fr;
+    gap:24px;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+    align-items:baseline;
+  }
+  .service-row:last-child{ border-bottom:1px solid var(--line); }
+  .service-row .num{ font-family:'IBM Plex Mono', monospace; color:var(--ochre); font-size:0.85rem; }
+  .service-row h3{ font-size:1.15rem; margin-bottom:6px; }
+  .service-row p{ color:#4B4738; font-size:0.96rem; max-width:640px; }
+
+  /* ---------- Products ---------- */
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:20px;
+  }
+  .product-card{
+    background:var(--cream-dark);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:22px 20px;
+    position:relative;
+  }
+  .product-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:20px;
+    width:34px; height:10px;
+    background:var(--ochre-light);
+    border-radius:0 0 3px 3px;
+  }
+  .product-card h3{ font-size:1.02rem; margin:14px 0 8px; line-height:1.3; }
+  .product-card p{ font-size:0.88rem; color:#4B4738; }
+
+  /* ---------- About ---------- */
+  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:start; }
+  .about-grid p{ color:#4B4738; margin-bottom:16px; max-width:560px; }
+  .credential{
+    border:1px solid var(--line);
+    background:var(--cream-dark);
+    padding:20px;
+    border-radius:3px;
+  }
+  .credential .eyebrow{ margin-bottom:8px; display:block; }
+  .credential h3{ font-size:1.05rem; margin-bottom:4px; }
+  .credential p{ font-size:0.86rem; color:#4B4738; margin:0; }
+
+  /* ---------- Contact ---------- */
+  .contact h2{ margin-bottom:16px; }
+  .contact p.lede{ max-width:520px; color:#4B4738; margin-bottom:28px; }
+  .contact-links{ display:flex; gap:28px; flex-wrap:wrap; }
+  .contact-links a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.88rem;
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--ochre);
+    padding-bottom:2px;
+  }
+  .contact-links a:hover{ color:var(--ochre); }
+
+  footer{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.74rem;
+    color:#8A8368;
+    padding:28px 8vw 40px calc(8vw + 34px);
+  }
+
+  @media (max-width:760px){
+    nav.tabs{
+      position:fixed; bottom:0; top:auto; left:0; right:0;
+      width:100%; height:auto; flex-direction:row;
+      padding:0; overflow-x:auto; justify-content:flex-start;
+    }
+    nav.tabs .tab{
+      writing-mode:horizontal-tb; transform:none;
+      border-right:none; border-top:3px solid transparent;
+      padding:12px 16px; white-space:nowrap;
+    }
+    nav.tabs .tab:hover, nav.tabs .tab.active{ border-top:3px solid var(--ochre); border-right:none; }
+    main{ padding-bottom:64px; }
+    .page{ padding:64px 6vw 64px 44px; }
+    .page::after, .page::before{ left:0; }
+    .about-grid{ grid-template-columns:1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .btn, nav.tabs .tab{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="tabs" aria-label="Section navigation">
+    <a href="#overview" class="tab active">Overview</a>
+    <a href="#services" class="tab">Services</a>
+    <a href="#products" class="tab">Products</a>
+    <a href="#about" class="tab">About</a>
+    <a href="#contact" class="tab">Contact</a>
+  </nav>
+
+  <main>
+    <div class="page">
+
+      <section id="overview" class="hero">
+        <span class="tagline-tab">● currently taking on 2 new clients</span>
+        <h1>Antonnet Chigumba</h1>
+        <p class="role">Finance &amp; Administration Officer — and Virtual Assistant for small businesses that need their back office handled properly.</p>
+        <p class="lede">Based in Harare, Zimbabwe. I bring finance-trained rigor — reconciliations, records, reporting — to the admin, scheduling, and operations work that keeps a small business moving. If it involves a spreadsheet, an inbox, or a deadline, it's in good hands.</p>
+        <div class="cta-row">
+          <a href="#contact" class="btn btn-primary">Work with me</a>
+          <a href="#products" class="btn btn-ghost">See the templates</a>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="section-head">
+          <span class="eyebrow">What I take off your plate</span>
+          <h2>Services</h2>
+        </div>
+        <div class="service-list">
+          <div class="service-row">
+            <span class="num">01</span>
+            <div><h3>Financial Administration</h3><p>Bookkeeping support, invoice and expense tracking, reconciliations, and reporting you can actually hand to an accountant.</p></div>
+          </div>
+          <div class="service-row">
+            <span class="num">02</span>
+            <div><h3>Inbox &amp; Calendar Management</h3><p>Triaged inboxes, scheduled meetings, and a calendar that reflects reality instead of chaos.</p></div>
+          </div>
+          <div class="service-row">
+            <span class="num">03</span>
+            <div><h3>Operations &amp; Admin Support</h3><p>Document handling, client onboarding, filing systems, and the recurring admin tasks that quietly eat a founder's week.</p></div>
+          </div>
+          <div class="service-row">
+            <span class="num">04</span>
+            <div><h3>Client &amp; Vendor Coordination</h3><p>Following up, chasing paperwork, and keeping communication moving so nothing sits in limbo.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="products">
+        <div class="section-head">
+          <span class="eyebrow">Ready-made systems</span>
+          <h2>Digital Products</h2>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <h3>VA Client Onboarding Kit</h3>
+            <p>Welcome packet, intake form, and workflow templates for starting a new client off organized.</p>
+          </div>
+          <div class="product-card">
+            <h3>Small Business Admin Toolkit</h3>
+            <p>The core trackers and templates every small business needs but rarely has time to build.</p>
+          </div>
+          <div class="product-card">
+            <h3>Weekly Ops Planner</h3>
+            <p>A simple weekly system for tracking priorities, tasks, and follow-ups without the overwhelm.</p>
+          </div>
+          <div class="product-card">
+            <h3>Client Prep Pack</h3>
+            <p>Everything needed to walk into a new client relationship prepared, from agendas to checklists.</p>
+          </div>
+          <div class="product-card">
+            <h3>VA Rate &amp; Proposal Templates</h3>
+            <p>Pricing guidance and ready-to-send proposal templates for quoting your own VA services with confidence.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-head">
+          <span class="eyebrow">Background</span>
+          <h2>About</h2>
+        </div>
+        <div class="about-grid">
+          <div>
+            <p>I currently work as Finance and Administration Officer at Tamex Auto Logistics, handling financial administration and operational support in the vehicle importation space. Before that, my background moved through administrative support, finance, and operations roles — which is where I learned that good admin isn't glamorous, but it's what makes everything else possible.</p>
+            <p>Outside my day role, I run a virtual assistant practice for small businesses and solo founders who need reliable, detail-oriented support without hiring in-house.</p>
+          </div>
+          <div class="credential" style="margin-bottom:16px;">
+            <span class="eyebrow">Credential</span>
+            <h3>ACCA Diploma</h3>
+            <p>Formal grounding in accounting and financial principles, applied daily to admin and reporting work.</p>
+          </div>
+          <div class="credential" style="margin-bottom:16px;">
+            <span class="eyebrow">Credential</span>
+            <h3>Certificate in Banking &amp; Finance</h3>
+            <p>The Institute of Bankers Zimbabwe.</p>
+          </div>
+          <div class="credential">
+            <span class="eyebrow">Credential</span>
+            <h3>Certificate in Project Administration &amp; Finance</h3>
+            <p>Concern Africa Trust.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
+        <div class="section-head">
+          <span class="eyebrow">Let's talk</span>
+          <h2>Get in touch</h2>
+        </div>
+        <p class="lede">Have admin, finance, or ops work piling up? I'd rather you tell me about it than keep managing it alone.</p>
+        <div class="contact-links">
+          <a href="mailto:chigumbaantonnet@outlook.com">chigumbaantonnet@outlook.com</a>
+          <a href="https://www.linkedin.com/in/antonnet-chigumba" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://wa.me/263771489939" target="_blank" rel="noopener">WhatsApp ↗</a>
+        </div>
+      </section>
+
+    </div>
+    <footer>Antonnet Chigumba — Harare, Zimbabwe</footer>
+  </main>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('nav.tabs .tab');
+  const sections = document.querySelectorAll('main section');
+  const setActive = () => {
+    let current = sections[0].id;
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= 140) current = sec.id;
+    });
+    tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', setActive, { passive:true });
+  setActive();
+</script>
+</body>
+</html>
